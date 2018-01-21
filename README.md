@@ -6,7 +6,7 @@ This Python stochastic search package, stochsearch, includes an implementation o
 
 Installation
 ---------------
-                $ pip install stochsearch
+        $ pip install stochsearch
                
 Requirements: numpy
 
