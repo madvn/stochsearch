@@ -1,3 +1,9 @@
+'''
+Demo of EvolSearch
+evolving for 10 dim vectors with each element in [0,1], maximizing their means
+i.e. best solution is [1,1,1,1,1,1,1,1,1,1]
+'''
+
 import numpy as np
 from stochsearch import EvolSearch
 
