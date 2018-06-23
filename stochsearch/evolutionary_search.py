@@ -41,7 +41,8 @@ class EvolSearch:
         assert self.fitness_function,"Invalid fitness_function"
         rand_genotype = np.random.rand(self.genotype_size)
         rand_genotype_fitness = self.fitness_function(rand_genotype)
-        assert type(rand_genotype_fitness) == type(0.) or type(rand_genotype_fitness) in np.sctypes['float'],"Invalid return type for fitness_function. Should be float or np.dtype('np.float*')"
+        assert type(rand_genotype_fitness) == type(0.) or type(rand_genotype_fitness) in np.sctypes['float'],\
+                 "Invalid return type for fitness_function. Should be float or np.dtype('np.float*')"
 
         # create other required data
         self.num_processes = evol_params.get('num_processes',None)
@@ -53,7 +54,7 @@ class EvolSearch:
         # check for fitness function kwargs
         if 'fitness_args' in evol_params.keys():
             optional_args = evol_params['fitness_args']
-            assert len(optional_args) == 1 or len(optional_args) == pop_size,
+            assert len(optional_args) == 1 or len(optional_args) == pop_size,\
                     "fitness args should be length 1 or pop_size."
             self.optional_args = optional_args
         else:
