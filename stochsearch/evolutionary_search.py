@@ -34,7 +34,7 @@ class EvolSearch:
         self.pop_size = evol_params['pop_size']
         self.genotype_size = evol_params['genotype_size']
         self.fitness_function = evol_params['fitness_function']
-        self.elitist_fraction = int(evol_params['elitist_fraction']*self.pop_size)
+        self.elitist_fraction = int(np.ceil(evol_params['elitist_fraction']*self.pop_size))
         self.mutation_variance = evol_params['mutation_variance']
 
         # validating fitness function
