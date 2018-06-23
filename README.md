@@ -23,7 +23,8 @@ In order to use this package
             'genotype_size': 10, # dimensionality of solution
             'fitness_function': fitness_function, # custom function defined to evaluate fitness of a solution
             'elitist_fraction': 0.04, # fraction of population retained as is between generations
-            'mutation_variance': 0.05 # mutation noise added to offspring.
+            'mutation_variance': 0.05, # mutation noise added to offspring.
+            'fitness_args': np.arange(100), # (optional) fitness_function *argv, len(list) should be 1 or pop_size 
         }
  
 Define a function that takes a genotype as argument and returns the fitness value for that genotype - passed as the 'fitness_function' key in the evol_params dictionary. 
