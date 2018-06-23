@@ -49,6 +49,15 @@ class EvolSearch:
         self.fitness = np.zeros(self.pop_size)
         self.num_batches = int(self.pop_size/self.num_processes)
         self.num_remainder = int(self.pop_size%self.num_processes)
+        
+        # check for fitness function kwargs
+        if 'fitness_args' in evol_params.keys():
+            optional_args = evol_params['fitness_args']
+            assert len(optional_args) == 1 or len(optional_args) == pop_size,
+                    "fitness args should be length 1 or pop_size."
+            self.optional_args = optional_args
+        else:
+            self.optional_args = None
 
         # creating the global process pool to be used across all generations
         global __evolsearch_process_pool
@@ -58,7 +67,13 @@ class EvolSearch:
         '''
         Call user defined fitness function and pass genotype
         '''
-        return self.fitness_function(self.pop[individual_index,:]) #np.sum(self.pop[indvidual_index,:])
+        if self.optional_args:
+            if len(self.optional_args) == 1:
+                return self.fitness_function(self.pop[individual_index,:], self.optional_args)
+            else:
+                return self.fitness_function(self.pop[individual_index,:], self.optional_args[individual_index])
+        else:
+            return self.fitness_function(self.pop[individual_index,:])
 
     def elitist_selection(self):
         '''
