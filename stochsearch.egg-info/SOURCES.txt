@@ -1,0 +1,11 @@
+LICENSE
+MANIFEST.in
+README.rst
+setup.py
+stochsearch/__init__.py
+stochsearch/evolutionary_search.py
+stochsearch.egg-info/PKG-INFO
+stochsearch.egg-info/SOURCES.txt
+stochsearch.egg-info/dependency_links.txt
+stochsearch.egg-info/requires.txt
+stochsearch.egg-info/top_level.txt
