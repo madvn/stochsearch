@@ -6,3 +6,4 @@ Jan 2018
 '''
 
 from .evolutionary_search import *
+from .microbial_search import *

@@ -23,10 +23,9 @@ class MicrobialSearch():
                 mutation_variance: float - variance of the gaussian distribution used for mutation noise
                 recomb_prob: float between [0,1] -- proportion of genotype transfected from winner to loser
                 num_processes: int -  pool size for multiprocessing.pool.Pool - defaults to os.cpu_count()
-                generations: int - number of generations
         '''
         # check for required keys
-        required_keys = ['pop_size','genotype_size','fitness_function','recomb_prob','mutation_variance','num_processes','generations']
+        required_keys = ['pop_size','genotype_size','fitness_function','recomb_prob','mutation_variance','num_processes']
         for key in required_keys:
             if key not in evol_params.keys():
                 raise Exception('Argument evol_params does not contain the following required key: '+key)
@@ -38,7 +37,6 @@ class MicrobialSearch():
         self.mutation_variance = evol_params['mutation_variance']
         self.recomb_prob = evol_params['recomb_prob']
         self.num_processes = evol_params['num_processes']
-        self.generations = evol_params['generations']
 
         # validating fitness function
         assert self.fitness_function,"Invalid fitness_function"
@@ -50,19 +48,9 @@ class MicrobialSearch():
         # Search parameters
         self.group_size = int(self.pop_size/3)
 
-        # Data structures
-        self.hist = np.zeros((self.generations,self.pop_size))
-        self.best = np.zeros((self.generations))
-        self.avg = np.zeros((self.generations))
-
         # Keep track of individuals to be mutated
         self.mutlist = np.zeros((self.group_size), dtype=int)
-        self.mutpop = np.zeros((self.group_size,self.genotype_size))
         self.mutfit = np.zeros((self.group_size))
-
-        # Create population and evaluate everyone once
-        self.pop = np.random.random((self.pop_size,self.genotype_size))
-        self.fit = np.zeros((self.pop_size))
 
         # Creating the global process pool to be used across all generations
         global _pool
@@ -77,56 +65,88 @@ class MicrobialSearch():
         else:
             self.optional_args = None
 
+        # Create population and evaluate everyone once
+        self.pop = np.random.random((self.pop_size,self.genotype_size))
+        self.fitness = np.asarray(_pool.map(self.evaluate_fitness,np.arange(self.pop_size)))
+
     def evaluate_fitness(self,individual_index):
         '''
         Call user defined fitness function and pass genotype
         '''
         if self.optional_args:
             if len(self.optional_args) == 1:
-                return self.fitness_function(self.pop[individual_index,:], self.optional_args)
+                return self.fitness_function(self.pop[individual_index,:], self.optional_args[0])
             else:
                 return self.fitness_function(self.pop[individual_index,:], self.optional_args[individual_index])
         else:
             return self.fitness_function(self.pop[individual_index,:])
 
-    def execute_search(self):
+    def step_generation(self):
+        '''
+        evaluate fitness and step on generation
+        '''
         global _pool
-        # Update fitness first time around
-        self.fit = np.asarray(_pool.map(self.evaluate_fitness,np.arange(self.pop_size)))
-        # Evolutionary loop
-        for i in range(self.generations):
-            # Keep statistics
-            self.hist[i] = self.fit
-            self.best[i] = np.amax(self.fit)
-            self.avg[i] = np.average(self.fit)
-            # Perform tournament for every individual in population
-            for j in range(3):
-                k = 0
-                for a in range(j,self.pop_size-2,3):
-                    # Step 1: Pick 2nd individual as left or right hand side neighbor of first
-                    b = (a+random.choice([-1,1]))%self.pop_size
-                    # Step 2: Compare their fitness
-                    if (self.fit[a] > self.fit[b]):
-                        winner = a
-                        loser = b
-                    else:
-                        winner = b
-                        loser = a
-                    # Step 3: Transfect loser with winner
-                    for l in range(self.genotype_size):
-                        if (random.random() < self.recomb_prob):
-                            self.pop[loser][l] = self.pop[winner][l]
-                    # Step 4: Mutate loser
-                    m = np.random.normal(0.0, self.mutation_variance, self.genotype_size)
-                    self.pop[loser] = np.clip(np.add(self.pop[loser],m),0.0,1.0)
-                    # Step 5: Add to mutated list (which will be re-evaluated)
-                    self.mutlist[k]=loser
-                    k+=1
-                # Step 6: Recalculate fitness of list of mutated losers
-                ##for k in range(self.group_size):
-                ##    self.mutpop[k] = self.pop[self.mutlist[k]]
-                #for k in range(processes):
-                #    mutfit[k] = evaluate(mutpop[k])
-                self.mutfit = list(_pool.map(self.evaluate_fitness,self.mutlist))
-                for k in range(self.group_size):
-                    self.fit[self.mutlist[k]] = self.mutfit[k]
+        # Perform tournament for every individual in population
+        for j in range(3):
+            k = 0
+            for a in range(j,self.pop_size-2,3):
+                # Step 1: Pick 2nd individual as left or right hand side neighbor of first
+                b = (a+random.choice([-1,1]))%self.pop_size
+                # Step 2: Compare their fitness
+                if (self.fitness[a] > self.fitness[b]):
+                    winner = a
+                    loser = b
+                else:
+                    winner = b
+                    loser = a
+                # Step 3: Transfect loser with winner
+                for l in range(self.genotype_size):
+                    if (random.random() < self.recomb_prob):
+                        self.pop[loser][l] = self.pop[winner][l]
+                # Step 4: Mutate loser
+                m = np.random.normal(0.0, self.mutation_variance, self.genotype_size)
+                self.pop[loser] = np.clip(np.add(self.pop[loser],m),0.0,1.0)
+                # Step 5: Add to mutated list (which will be re-evaluated)
+                self.mutlist[k]=loser
+                k+=1
+            # Step 6: Recalculate fitness of list of mutated losers
+            self.mutfit = list(_pool.map(self.evaluate_fitness, self.mutlist))
+            for k in range(self.group_size):
+                self.fitness[self.mutlist[k]] = self.mutfit[k]
+
+    def execute_search(self, num_gens):
+        '''
+        runs the evolutionary algorithm for given number of generations, num_gens
+        '''
+        for _ in range(num_gens):
+            self.step_generation()
+
+    def get_fitnesses(self):
+        '''
+        simply return all fitness values of current population
+        '''
+        return self.fitness
+
+    def get_best_individual(self):
+        '''
+        returns 1D array of the genotype that has max fitness
+        '''
+        return self.pop[np.argmax(self.fitness),:]
+
+    def get_best_individual_fitness(self):
+        '''
+        return the fitness value of the best individual
+        '''
+        return np.max(self.fitness)
+
+    def get_mean_fitness(self):
+        '''
+        returns the mean fitness of the population
+        '''
+        return np.mean(self.fitness)
+
+    def get_fitness_variance(self):
+        '''
+        returns variance of the population's fitness
+        '''
+        return np.std(self.fitness)**2

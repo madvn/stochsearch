@@ -5,7 +5,7 @@ i.e. best solution is [1,1,1,1,1,1,1,1,1,1]
 '''
 
 import numpy as np
-from microbial_search import MicrobialSearch
+from stochsearch import MicrobialSearch
 import matplotlib.pyplot as plt
 
 def fitness_function(individual):
@@ -20,8 +20,8 @@ evol_params = {
     'pop_size' : 100,    # population size
     'genotype_size': 10, # dimensionality of solution
     'fitness_function': fitness_function, # custom function defined to evaluate fitness of a solution
-    'recomb_prob': 0.5, # fraction of population retained as is between generations
-    'mutation_variance': 0.05, # mutation noise added to offspring.
+    'recomb_prob': 0.1, # fraction of population retained as is between generations
+    'mutation_variance': 0.01, # mutation noise added to offspring.
     'generations' : 100
 }
 
@@ -31,14 +31,22 @@ ms = MicrobialSearch(evol_params)
 '''OPTION 1'''
 # execute the search for 100 generations
 num_gens = 100
-ms.execute_search()
+hist = np.zeros((100,100))
+best = []
+avg = []
 
-plt.pcolormesh(ms.hist)
+for i in range(num_gens):
+    ms.step_generation()
+    hist[i,:] = ms.get_fitnesses()
+    best.append(ms.get_best_individual_fitness())
+    avg.append(ms.get_mean_fitness())
+
+plt.pcolormesh(np.asarray(hist))
 plt.xlabel('Fitness of each individual in population')
 plt.ylabel('Generations')
 plt.show()
-plt.plot(ms.best,label='Best')
-plt.plot(ms.avg,label='Average')
+plt.plot(best,label='Best')
+plt.plot(avg,label='Average')
 plt.xlabel('Generations')
 plt.ylabel('Fitness')
 plt.show()

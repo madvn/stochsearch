@@ -134,6 +134,12 @@ class EvolSearch:
         for gen in np.arange(num_gens):
             self.step_generation()
 
+    def get_fitnesses(self):
+        '''
+        simply return all fitness values of current population
+        '''
+        return self.fitness
+
     def get_best_individual(self):
         '''
         returns 1D array of the genotype that has max fitness
