@@ -32,6 +32,7 @@ es = EvolSearch(evol_params)
 num_gens = 100
 es.execute_search(num_gens)
 '''
+
 '''OPTION 2'''
 # keep searching till a stopping condition is reached
 best_fit = []
@@ -57,4 +58,5 @@ plt.plot(best_fit)
 plt.plot(mean_fit)
 plt.xlabel('Generations')
 plt.ylabel('Fitness')
+plt.legend(['best fitness', 'avg. fitness'])
 plt.show()

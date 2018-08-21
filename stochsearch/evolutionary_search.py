@@ -4,7 +4,8 @@ Contains the multiprocessing evolutionary search class
 Madhavun Candadai
 Jan, 2018
 '''
-from multiprocessing import Pool
+#from multiprocessing import Pool
+from pathos.multiprocessing import ProcessPool
 import numpy as np
 
 __evolsearch_process_pool = None
@@ -64,7 +65,7 @@ class EvolSearch:
 
         # creating the global process pool to be used across all generations
         global __evolsearch_process_pool
-        __evolsearch_process_pool = Pool(self.num_processes)
+        __evolsearch_process_pool = ProcessPool(self.num_processes)
 
     def evaluate_fitness(self,individual_index):
         '''

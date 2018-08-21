@@ -9,13 +9,13 @@ with open('LICENSE') as f:
 
 setup(
     name='stochsearch',
-    version='2.2',
-    description='A package that implements an evolutionary algorithm using the multiprocessing framework for parallelization',
+    version='4.0',
+    description='A package that implements an evolutionary algorithm and a microbial genetic algorithm using the multiprocessing framework for parallelization',
     long_description=readme,
     author='Madhavun Candadai',
     author_email='madvncv@gmail.com',
     url='https://github.com/madvn/stochsearch',
     license=license,
     packages=['stochsearch'],
-    install_requires=['numpy']
+    install_requires=['numpy', 'pathos']
 )
