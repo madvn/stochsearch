@@ -17,5 +17,5 @@ setup(
     url='https://github.com/madvn/stochsearch',
     license=license,
     packages=['stochsearch'],
-    install_requires=['numpy', 'pathos']
+    install_requires=['numpy']
 )
