@@ -1,7 +1,7 @@
 Metadata-Version: 1.0
 Name: stochsearch
-Version: 2.1
-Summary: A package that implements an evolutionary algorithm using the multiprocessing framework for parallelization
+Version: 4.1
+Summary: A package that implements an evolutionary algorithm and a microbial genetic algorithm using the multiprocessing framework for parallelization
 Home-page: https://github.com/madvn/stochsearch
 Author: Madhavun Candadai
 Author-email: madvncv@gmail.com

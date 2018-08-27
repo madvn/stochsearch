@@ -1,1 +1,4 @@
 numpy
+pathos
+dill
+ppft
