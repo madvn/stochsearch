@@ -57,7 +57,7 @@ class EvolSearch:
         # check for fitness function kwargs
         if 'fitness_args' in evol_params.keys():
             optional_args = evol_params['fitness_args']
-            assert len(optional_args) == 1 or len(optional_args) == pop_size,\
+            assert len(optional_args) == 1 or len(optional_args) == self.pop_size,\
                     "fitness args should be length 1 or pop_size."
             self.optional_args = optional_args
         else:
