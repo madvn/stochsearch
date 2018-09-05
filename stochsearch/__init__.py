@@ -1,9 +1,10 @@
 '''
-Packagifying and importing EvolSearch class
+Packagifying and importing stochsearch classes
 
 Madhavun Candadai
 Jan 2018
 '''
 
-from .evolutionary_search import *
-from .microbial_search import *
+from stochsearch.evolutionary_search import EvolSearch
+from stochsearch.microbial_search import MicrobialSearch
+from stochsearch.lamarkian_search import LamarckianSearch
