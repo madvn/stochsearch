@@ -1,22 +1,21 @@
-Stochastic Search - Evolutionary Optimization
+Stochastic Search
 =========================
-An evolutionary algorithm is a stochastic search based optimization technique. It is a population based method, where the optimization starts with a population of random solutions (individuals or genotypes). Each individual is assigned a fitness score based on how well they perform in the task at hand. Based on this fitness, a fraction of the best performing individuals are retained for the next iteration (generation). a new population of solutions is then created for the next generation with these 'elite' individuals and copies of them that have been subjected to mutation noise. This process is repeated either for a fixed number of generations, or until a desired fitness value is reached by the best individual in the population. In a non-stochastic system, this procedure will cause the fitness to be non-decreasing over generations. For those familiar with hill climbing, this approach can be seen as multiple hill climbers searching in parallel, where the number of hill climbers would be given by the elitist fraction of the population that are retained generation after generation. This same implementation can be used to perform hill-climbing if the elitist fraction is set such that elitist_fraction*population_size = 1.
-
-This Python stochastic search package, stochsearch, includes an implementation of evolutionary algorithms in a class called EvolSearch using the Python multiprocessing framework. Fitness evaluation of individuals in a population is carried out in parallel across CPUs in a multiprocessing.pool.Pool with the number of processes defined by the user or by os.cpu_count() of the system. This package can be imported as follows "from stochsearch import EvolSearch".
+This Python stochastic search package, stochsearch, includes an implementation of algorithms such as evolutionary algorithm, microbial genetic algorithm, and lamarckian evolutionary algorithm, using the Python pathos multiprocessing framework. Fitness evaluation of individuals in a population is carried out in parallel across CPUs in a multiprocessing pool with the number of processes defined by the user or by os.cpu_count() of the system. Read below for installation and usage instructions.
 
 Installation
 ---------------
         $ pip install stochsearch
-               
-Requirements: numpy
+
+Requirements: numpy, pathos
 
 Usage
 ---------------
-In order to use this package
+This section illustrates how to use this package for evolutionary search. It is similar for other search methods. The only items that may change are the parameters of the search. See [this] for a description and list of parameters for each search method.
+
 #### Importing evolutionary search
         from stochsearch import EvolSearch
-        
-#### Setup parameters for evolutionary search using a dictionary as follows 
+
+#### Setup parameters for evolutionary search using a dictionary as follows
         evol_params = {
             'num_processes' : 4, # (optional) number of proccesses for multiprocessing.Pool
             'pop_size' : 100,    # population size
@@ -24,10 +23,10 @@ In order to use this package
             'fitness_function': fitness_function, # custom function defined to evaluate fitness of a solution
             'elitist_fraction': 0.04, # fraction of population retained as is between generations
             'mutation_variance': 0.05, # mutation noise added to offspring.
-            'fitness_args': np.arange(100), # (optional) fitness_function *argv, len(list) should be 1 or pop_size 
+            'fitness_args': np.arange(100), # (optional) fitness_function *argv, len(list) should be 1 or pop_size
         }
- 
-Define a function that takes a genotype as argument and returns the fitness value for that genotype - passed as the 'fitness_function' key in the evol_params dictionary. 
+
+Define a function that takes a genotype as argument and returns the fitness value for that genotype - passed as the 'fitness_function' key in the evol_params dictionary.
 
 #### Create an evolutionary search object
         es = EvolSearch(evol_params)
@@ -37,7 +36,7 @@ Option 1: Run the search for a certain number of generations
 
         num_gens = 100
         es.execute_search(num_gens)
-        
+
 Option 2: Step through the generations based on a condition
 
         max_num_gens = 100
@@ -47,11 +46,12 @@ Option 2: Step through the generations based on a condition
                 print('Gen #'+str(gen)+' Best Fitness = '+str(es.get_best_individual_fitness()))
                 es.step_generation()
                 gen += 1
-                
+
 #### Accessing results
         print('Max fitness of population = ',es.get_best_individual_fitness())
         print('Best individual in population = ',es.get_best_individual())
 
-See [demos] folder for a sample program.
+See [demos] folder for a sample script.
 
+[this]: https://github.com/madvn/stochsearch/blob/master/stochsearch/README.md
 [demos]: https://github.com/madvn/stochsearch/blob/master/demo/evolsearch_demo.py
