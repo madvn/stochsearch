@@ -7,4 +7,4 @@ Jan 2018
 
 from stochsearch.evolutionary_search import EvolSearch
 from stochsearch.microbial_search import MicrobialSearch
-from stochsearch.lamarkian_search import LamarckianSearch
+from stochsearch.lamarckian_search import LamarckianSearch

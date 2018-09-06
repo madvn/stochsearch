@@ -9,8 +9,8 @@ with open('LICENSE') as f:
 
 setup(
     name='stochsearch',
-    version='4.1',
-    description='A package that implements an evolutionary algorithm and a microbial genetic algorithm using the multiprocessing framework for parallelization',
+    version='5.0',
+    description='A package that implements anumber of stochastic search algorithms using the pathos multiprocessing framework for parallelization',
     long_description=readme,
     author='Madhavun Candadai',
     author_email='madvncv@gmail.com',
