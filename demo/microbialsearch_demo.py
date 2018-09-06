@@ -22,7 +22,6 @@ evol_params = {
     'fitness_function': fitness_function, # custom function defined to evaluate fitness of a solution
     'recomb_prob': 0.1, # fraction of population retained as is between generations
     'mutation_variance': 0.01, # mutation noise added to offspring.
-    'generations' : 100
 }
 
 # create evolutionary search object
