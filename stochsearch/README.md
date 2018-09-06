@@ -1,6 +1,6 @@
 ### Search algorithms and their parameters
 
-##### Evolutionary Search (from stochsearch import EvolSearch)
+#### Evolutionary Search (from stochsearch import EvolSearch)
 An evolutionary algorithm is a stochastic search based optimization technique. It is a population based method, where optimization starts with a population of random solutions (individuals or genotypes). Each individual is assigned a fitness score based on how well they perform in the task at hand. Based on this fitness, a fraction of the best performing individuals are retained for the next iteration (generation). a new population of solutions is then created for the next generation with these 'elite' individuals and copies of them that have been subjected to mutation noise. This process is repeated either for a fixed number of generations, or until a desired fitness value is reached by the best individual in the population. In a non-stochastic system, this procedure will cause the fitness to be non-decreasing over generations. For those familiar with hill climbing, this approach can be seen as multiple hill climbers searching in parallel, where the number of hill climbers would be given by the elitist fraction of the population that are retained generation after generation. This same implementation can be used to perform hill-climbing if the elitist fraction is set such that elitist_fraction*population_size = 1.
 
     evol_params = {
