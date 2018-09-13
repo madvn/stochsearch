@@ -4,9 +4,10 @@ Multiprocessor Spatial Microbial GA
 Eduardo Izquierdo
 July, 2018
 '''
-from pathos.multiprocessing import ProcessPool
 import random
+import time
 import numpy as np
+from pathos.multiprocessing import ProcessPool
 
 _pool = None
 
@@ -55,6 +56,7 @@ class MicrobialSearch():
         # Creating the global process pool to be used across all generations
         global _pool
         _pool = ProcessPool(self.num_processes)
+        time.sleep(0.5)
 
         # check for fitness function kwargs
         if 'fitness_args' in evol_params.keys():

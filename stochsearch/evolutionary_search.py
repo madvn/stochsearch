@@ -5,8 +5,9 @@ Madhavun Candadai
 Jan, 2018
 '''
 #from multiprocessing import Pool
-from pathos.multiprocessing import ProcessPool
+import time
 import numpy as np
+from pathos.multiprocessing import ProcessPool
 
 __evolsearch_process_pool = None
 
@@ -66,6 +67,7 @@ class EvolSearch:
         # creating the global process pool to be used across all generations
         global __evolsearch_process_pool
         __evolsearch_process_pool = ProcessPool(self.num_processes)
+        time.sleep(0.5)
 
     def evaluate_fitness(self,individual_index):
         '''

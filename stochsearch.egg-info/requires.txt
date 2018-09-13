@@ -1,4 +1,0 @@
-numpy
-pathos
-dill
-ppft

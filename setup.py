@@ -9,7 +9,7 @@ with open('LICENSE') as f:
 
 setup(
     name='stochsearch',
-    version='5.0',
+    version='5.0.5',
     description='A package that implements anumber of stochastic search algorithms using the pathos multiprocessing framework for parallelization',
     long_description=readme,
     author='Madhavun Candadai',
