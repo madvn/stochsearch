@@ -101,3 +101,5 @@ ENV/
 .mypy_cache/
 
 *egg-info*
+.eggs/*
+__pycache__/*
