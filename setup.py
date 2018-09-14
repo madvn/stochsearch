@@ -1,5 +1,5 @@
 from setuptools import setup
-
+from stochsearch.__init__ import __version__
 
 with open('README.rst') as f:
     readme = f.read()
@@ -9,7 +9,7 @@ with open('LICENSE') as f:
 
 setup(
     name='stochsearch',
-    version='5.0.5',
+    version=__version__,
     description='A package that implements anumber of stochastic search algorithms using the pathos multiprocessing framework for parallelization',
     long_description=readme,
     author='Madhavun Candadai',
