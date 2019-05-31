@@ -78,7 +78,7 @@ Option 2: Step through the generations based on a condition
        gen = 0
        desired_fitness = 0.9
        while es.get_best_individual_fitness() < desired_fitness and gen < max_num_gens:
-               print('Gen #'+str(gen)+' Best Fitness = '+str(es.get_best_individual_fitness()))
+               print("Gen #{} Best Fitness = {}".format(gen, es.get_best_individual_fitness()))
                es.step_generation()
                gen += 1
 
